@@ -3,4 +3,4 @@
 /vendor
 *.log
 .env
-app/api/config/aliyun.php
+/app/api/config/aliyun.php
