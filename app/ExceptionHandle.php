@@ -51,8 +51,18 @@ class ExceptionHandle extends Handle
     public function render($request, Throwable $e): Response
     {
         // 添加自定义异常处理机制
+        if (method_exists($e,'getStatusCode')){
+            $status =$e->getStatusCode();
+        } else {
+            $status = 200;
+        }
+        if (method_exists($e,'getCode')){
+            $code =$e->getCode();
+        } else {
+            $code = 0;
+        }
 
-        return show(config('status.error'),$e->getMessage());
+//        return show($code,$e->getMessage(),[],$status);
         // 其他错误交给系统处理
         return parent::render($request, $e);
     }
