@@ -74,32 +74,34 @@
                     </thead>
                     <tbody>
                     <!--一级类目循环-->
+                    {foreach $goods['data'] as $key=>$vo }
                     <tr>
-                        <td>1</td>
+                        <td>{$vo.id}</td>
                         <td>
                             <div class="layui-input-inline layui-text-center">
-                                <input type="text" value="1" data-id="1" class="changeSort layui-input">
+                                <input type="text" value="{$vo.listorder}" data-id="1" class="changeSort layui-input">
                             </div>
                         </td>
-                        <td>商品1</td>
+                        <td>{$vo.title}</td>
                         <td class="show-img">
-                            <img  src="../images/default.png" data-src=""  style="width: 24px;height: 24px;" />
+                            <img  src="{$vo.recommend_image}" data-src="{$vo.recommend_image}"  style="width: 24px;height: 24px;" />
                         </td>
-                        <td>123</td>
-                        <td>发布时间</td>
-                        <td><input type="checkbox" checked name="status" lay-skin="switch"
+                        <td>{$vo.stock}</td>
+                        <td>{$vo.production_time}</td>
+                        <td><input type="checkbox" {if $vo.status==1 } checked {/if} name="status" lay-skin="switch"
                             lay-filter="switchStatus"
                             lay-text="开启|关闭"></td>
-                        <td><input type="checkbox" checked name="is_index_recommend" lay-skin="switch"
+                        <td><input type="checkbox" {if $vo.is_index_recommend==1 } checked {/if} name="is_index_recommend" lay-skin="switch"
                                    lay-filter="isIndexRecommend"
                                    lay-text="是|否"></td>
                         <td>
                             <a class="layui-btn layui-btn-xs  edit" lay-event="edit">编辑</a>
                             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete del-child" data-ptype="1"
-                                    lay-event="delete" data-id="$id">删除
+                                    lay-event="delete" data-id="{$vo.id}">删除
                             </a>
                         </td>
                     </tr>
+                    {/foreach}
                     </tbody>
                 </table>
             </div>

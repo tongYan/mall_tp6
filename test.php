@@ -10,17 +10,22 @@
 //            echo 666;
 //        }
 
-$arr = ['user'=>true,'pass'=>true];
-//$arr = ['user'=>'true','pass'=>'true'];
-$str = json_encode($arr);
-var_dump($str);
-$data = json_decode($str,true);
-var_dump($data);
-var_dump($data['user'] == 'root' && $data['pass'] == 'mypass');  //true
+//$arr = ['user'=>true,'pass'=>true];
+////$arr = ['user'=>'true','pass'=>'true'];
+//$str = json_encode($arr);
+//var_dump($str);
+//$data = json_decode($str,true);
+//var_dump($data);
+//var_dump($data['user'] == 'root' && $data['pass'] == 'mypass');  //true
+//
+//var_dump(true == 'root');   //bool(true)
+//
+//$arr = ['user'=>true,'pass'=>true];
+//$s1 = serialize($arr);
+//var_dump($s1);
+//var_dump(unserialize($s1));
 
-var_dump(true == 'root');   //bool(true)
+//$arr = [0,1,2];
+//var_dump(in_array('ab',$arr));          //bool(true)
+//var_dump(array_search('2a',$arr));      //int(2)
 
-$arr = ['user'=>true,'pass'=>true];
-$s1 = serialize($arr);
-var_dump($s1);
-var_dump(unserialize($s1));

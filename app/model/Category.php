@@ -4,9 +4,8 @@
 namespace app\model;
 
 
-use think\Model;
 
-class Category extends Model
+class Category extends BaseModel
 {
     public function getCategoryByName($name)
     {
@@ -27,11 +26,12 @@ class Category extends Model
         return $res ;
     }
 
-    public function getNormalCategoryByPid($pid)
+    public function getNormalCategoryByPid($pid,$field='*')
     {
         $where = ['pid' => $pid,'status' => 1];
         $res = $this->where($where)
             ->order(['listorder'=>'desc','id'=>'desc'])
+            ->field($field)
             ->select();
         return $res ;
     }

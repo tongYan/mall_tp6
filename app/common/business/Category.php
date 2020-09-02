@@ -54,10 +54,10 @@ class Category
 
     }
 
-    public function getNormalCategoryByPid($pid = 0)
+    public function getNormalCategoryByPid($pid = 0,$field='id,name')
     {
         try {
-            $categorys =  $this->model->getNormalCategoryByPid($pid);
+            $categorys =  $this->model->getNormalCategoryByPid($pid,$field);
         } catch (Exception $e)
         {
             return [];
@@ -155,6 +155,88 @@ class Category
 //        halt($tree);
 
         return $tree;
+
+    }
+
+    /**
+     * 获取多个分类及其子分类的信息
+     * @param $pids
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getChildByPids($pids)
+    {
+        $category = $this->model->getNormalInIds($pids);
+        $where = [
+            ['pid','in',$pids],
+            ['status','=',1]
+        ];
+        $childen = $this->model->getByCondition([$where]);
+        $data = [];
+        foreach ($category as $val){
+            $data[$val['id']] = [
+                'category_id' => $val['id'],
+                'name' => $val['name'],
+                'icon' => '',
+            ];
+        }
+        foreach ($childen as $v){
+            $data[$v['pid']]['list'][] = [
+                'category_id' => $v['id'],
+                'name' => $v['name'],
+            ];
+        }
+        return array_values($data);
+    }
+
+
+    /**
+     * 商城前端分页搜索
+     * @param $id
+     * @return array
+     */
+    public function getIndexCategoryById($id)
+    {
+        
+        $category = $this->getCategoryById($id);
+        if ($category['pid']==0){ // 此时是一级分类，获取二级分类
+            $childs = $this->getNormalCategoryByPid($id,'id,name');
+            if (empty($childs)){
+                return [];
+            }
+            $res = [
+                'name' => $category['name'],
+                'focus_ids' => [],
+                'list' => [$childs],
+            ];
+
+        } else {
+            $parent = $this->getCategoryById($category['pid']);
+            if ($parent['pid']==0) { // 此时是二级分类
+                $category2 = $this->getNormalCategoryByPid($parent['id'],'id,name');
+                $category3 = $this->getNormalCategoryByPid($category['id'],'id,name');
+                $res = [
+                    'name' => $category['name'],
+                    'focus_ids' => [$category['id']],
+                    'list' => [$category2,$category3],
+                ];
+            }else{  //三级分类
+                $category1 = $this->getCategoryById($parent['pid']);
+                $category2 = $this->getNormalCategoryByPid($category1['id'],'id,name');
+                $category3 = $this->getNormalCategoryByPid($parent['id'],'id,name');
+                $res = [
+                    'name' => $category1['name'],
+                    'focus_ids' => [$parent['id'],$id],
+                    'list' => [$category2,$category3],
+                ];
+            }
+        }
+
+        return $res;
+
+
 
     }
 

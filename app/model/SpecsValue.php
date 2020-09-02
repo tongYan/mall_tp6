@@ -4,9 +4,8 @@
 namespace app\model;
 
 
-use think\Model;
 
-class SpecsValue extends Model
+class SpecsValue extends BaseModel
 {
     public function getBySpecsId($specs_id)
     {
@@ -25,5 +24,7 @@ class SpecsValue extends Model
         $data['update_time'] = time();
         return $this->where(['id'=>$id])->update($data);
     }
+
+
 
 }

@@ -215,6 +215,9 @@
             </div>
         </div>
     </div>
+    <div>
+        {:token_field()}
+    </div>
     <div class="layui-form-item layui-form">
         <div class="layui-input-block">
             <button type="submit" class="layui-btn" id='btnSubmit' lay-submit="" lay-filter="goods_submit">立即提交</button>
@@ -328,7 +331,8 @@
                 recommend_image: images('show_img'),
                 skus: skus(),
                 description: layedit.getContent(edit_index),
-                add_spec_arr: addSpecArr() // 提交的规格数据
+                add_spec_arr: addSpecArr(),
+                __token__:  $("input[name='__token__']").val()            // 提交的规格数据
             };
             console.log(goods_data);//这个data就是表单的值 包含以下值
 
@@ -336,7 +340,9 @@
             // 发送ajax请求
             layObj.post(url, goods_data,  (res) =>{
                 if(res.status == 1) {
-                    layer.msg("商品新增成功");
+                    layer.msg("商品新增成功",function (){
+                        window.location = "/admin/goods/index"
+                    });
                 } else {
                     layer.msg("商品新增失败");
                 }
